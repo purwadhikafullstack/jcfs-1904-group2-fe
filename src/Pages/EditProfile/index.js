@@ -13,12 +13,11 @@ import axios from "../../utils/axios";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Avatar from "@mui/icons-material/AccountCircleOutlined";
-import Upload from "@mui/icons-material/UploadOutlined";
 
 function EditProfile() {
   const params = useParams();
 
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [fullName, setFullName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState({ female: "", male: "" });
@@ -27,8 +26,9 @@ function EditProfile() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const onFileChange = (e) => {
-    setPhoto(e.target.files[0]);
+  const onImageChange = (e) => {
+    const photo = e.target.files[0];
+    setPhoto(photo);
   };
 
   const onChangeOldPassword = (e) => {
@@ -43,8 +43,7 @@ function EditProfile() {
   };
 
   //ambil Id di redux -> taruh Id di endpoint 40
-  const { id } = useSelector((state) => state.auth);
-  const { token } = useSelector((state) => state.auth);
+  const { id, token } = useSelector((state) => state.auth);
 
   const getUserById = async () => {
     try {
@@ -60,21 +59,22 @@ function EditProfile() {
     }
   };
 
-  const updateUserById = async () => {
+  const onSaveData = async () => {
     try {
-      const response = await axios.put(
-        `/users/edit-profile/${id}`,
-        {
-          fullName,
-          age,
-          gender,
-          address,
-          email,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const formData = new FormData();
+      formData.append("fullname", fullName);
+      formData.append("age", age);
+      formData.append("gender", gender);
+      formData.append("address", address);
+      formData.append("email", email);
+      formData.append("oldPassword", oldPassword);
+      formData.append("newPassword", newPassword);
+
+      const response = await axios.put(`/users/edit-profile/${id}`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      alert("Update Success");
 
       console.log(response.data);
     } catch (error) {
@@ -83,7 +83,7 @@ function EditProfile() {
   };
 
   const buttonHandleChange = () => {
-    updateUserById();
+    onSaveData();
   };
 
   useEffect(() => {
@@ -108,13 +108,8 @@ function EditProfile() {
         <div className="avatar">
           <Stack direction="row" spacing={2} sx={{ mt: 5 }}>
             <Avatar sx={{ fontSize: 60 }} />
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<Upload />}
-              onClick={onFileChange}
-            >
-              upload
+            <Button variant="outlined" component="label" size="small">
+              <input type="file" />
             </Button>
           </Stack>
         </div>
@@ -238,6 +233,7 @@ function EditProfile() {
               variant="contained"
               size="large"
               onClick={buttonHandleChange}
+              type="file"
             >
               {" "}
               SAVE{" "}

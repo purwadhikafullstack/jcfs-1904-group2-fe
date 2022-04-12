@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Navigation from "./components/Navigation/index";
-import Register from "./Pages/Register";
-import Forgotpass from "./Pages/Login/forgotpass";
-import EditProfile from "./Pages/EditProfile";
+import Register from "./pages/Register";
+import Forgotpass from "./pages/Login/forgotpass";
+import EditProfile from "./pages/EditProfile";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
