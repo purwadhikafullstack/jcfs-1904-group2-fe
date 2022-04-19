@@ -2,34 +2,12 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { keepLoginAction } from "./store/actions";
-import Login from "./Pages/Login";
+import Login from "./pages/Login";
 import Navigation from "./components/Navigation/index";
-<<<<<<< HEAD
-import Register from "./Pages/Register";
-import Forgotpass from "./Pages/Login/forgotpass";
-import EditProfile from "./Pages/EditProfile";
-import ProfilePicture from "./Pages/ProfilePicture";
-
-import { makeStyles } from "@material-ui/core/styles";
-import HomeUser from "./Pages/HomeUser/HomeUser";
-import HomeAdmin from "./Pages/HomeAdmin/HomeAdmin";
-import ProductDetail from "./Pages/HomeUser/components/Products/ProductDetail/ProductDetail";
-import EditDetailProduct from "./Pages/HomeAdmin/component/ProductsAdmin/EditDetailProduct/EditDetailProduct";
-import ItemSold from "./Pages/HomeAdmin/component/SalesReport/ItemSold/ItemSold";
-import UsersTransaction from "./Pages/HomeAdmin/component/SalesReport/UsersTransaction/UsersTransaction";
-import TransactionDetail from "./Pages/HomeAdmin/component/SalesReport/UsersTransaction/TransactionDetail/TransactionDetail";
-import UserDetail from "./Pages/HomeAdmin/component/SalesReport/UsersTransaction/UserDetail/UserDetail";
-import DrawerBar from "./Pages/HomeAdmin/component/Sidebar/Sidebar";
-import SalesReport from "./Pages/HomeAdmin/component/SalesReport/SalesReport";
-import PendingOrder from "./Pages/HomeAdmin/component/PendingOrder/PendingOrder";
-import OrderDetail from "./Pages/HomeAdmin/component/PendingOrder/OrderDetail/OrderDetail";
-import ItemSoldDetail from "./Pages/HomeAdmin/component/SalesReport/ItemSold/ItemSoldDetail/ItemSoldDetail";
-import Stocks from "./Pages/HomeAdmin/component/Stocks/Stocks";
-=======
 import Register from "./pages/Register";
 import Forgotpass from "./pages/Login/forgotpass";
 import EditProfile from "./pages/EditProfile";
-import ProfilePicture from "./pages/ProfilePicture"
+import ProfilePicture from "./pages/ProfilePicture";
 
 import { makeStyles } from "@material-ui/core/styles";
 import HomeUser from "./pages/HomeUser/HomeUser";
@@ -44,10 +22,9 @@ import DrawerBar from "./pages/HomeAdmin/component/Sidebar/Sidebar";
 import SalesReport from "./pages/HomeAdmin/component/SalesReport/SalesReport";
 import PendingOrder from "./pages/HomeAdmin/component/PendingOrder/PendingOrder";
 import OrderDetail from "./pages/HomeAdmin/component/PendingOrder/OrderDetail/OrderDetail";
-import ItemSoldDetail from './pages/HomeAdmin/component/SalesReport/ItemSold/ItemSoldDetail/ItemSoldDetail'
+import ItemSoldDetail from "./pages/HomeAdmin/component/SalesReport/ItemSold/ItemSoldDetail/ItemSoldDetail";
 import Stocks from "./pages/HomeAdmin/component/Stocks/Stocks";
 import StocksDetail from "./pages/HomeAdmin/component/Stocks/StocksDetail/StocksDetail";
->>>>>>> 5350b0f258a711b5e81a31cb03a089fb66317d76
 
 const useStyles = makeStyles({
   page: {
@@ -61,13 +38,9 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles();
-<<<<<<< HEAD
 
   const [role, setRole] = useState("users");
 
-=======
-  const [role, setRole] = useState("");
->>>>>>> 5350b0f258a711b5e81a31cb03a089fb66317d76
   const [isLocalStorageChecked, setIsLocalStorageChecked] = useState(false);
   const dispatch = useDispatch();
 
@@ -77,7 +50,7 @@ function App() {
       const userData = JSON.parse(userLocalStorage);
 
       const { id, username, role, tokens } = userData;
-      setRole(role)
+      setRole(role);
       dispatch(keepLoginAction({ id, username, role, tokens }));
     }
 
