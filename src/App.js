@@ -94,6 +94,10 @@ function App() {
                   element={<ItemSoldDetail />}
                 />
                 <Route
+                  path={`itemsold/product/:productId`}
+                  element={<ItemSoldDetail />}
+                />
+                <Route
                   path={`userstransaction`}
                   element={<UsersTransaction />}
                 />
