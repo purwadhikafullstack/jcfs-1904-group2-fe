@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import {Card, Paper, CardMedia, Button,CardActionArea, Grid, Box, Input, Container, CardContent, CardActions, Typography, TextField, Select, MenuItem} from '@material-ui/core';
 import axios from '../../../../../utils/axios'
 import { useParams } from "react-router-dom";
-
+import {useSelector} from 'react-redux'
 
 import useStyles from './styles';
 
 function EditDetailProduct() {
+    const data = useSelector((state) => {
+        return state.auth;
+      });
     const classes = useStyles();
     const params = useParams();
     const [product, setProduct] = useState({});
@@ -21,24 +24,24 @@ function EditDetailProduct() {
     const [isEditStock, setIsEditStock] = useState(false)
     const [isSave, setIsSave] = useState(false)
     const [stocks, setStocks] = useState({
-        product_id: null,
-        qtyBoxAvailable: null,
-        qtyBoxTotal: null,
-        qtyBottleAvailable: null,
-        qtyBottleTotal: null,
-        qtyMlAvailable: null,
-        qtyMlTotal: null,
-        qtyStripsavailable: null,
-        qtyStripsTotal: null,
-        qtyMgAvailable: null,
-        qtyMgTotal: null
+        product_id: 0,
+        qtyBoxAvailable: 0,
+        qtyBoxTotal: 0,
+        qtyBottleAvailable: 0,
+        qtyBottleTotal: 0,
+        qtyMlAvailable: 0,
+        qtyMlTotal: 0,
+        qtyStripsavailable: 0,
+        qtyStripsTotal: 0,
+        qtyMgAvailable: 0,
+        qtyMgTotal: 0
     })
     const [onCancelData, setOnCancelData] = useState([])
     const [onCancelStock, setOnCancelStock] = useState([])
     const [calculatedStock, setCalculatedStock] = useState({})
     const { product_id, qtyBoxAvailable, qtyBoxTotal, qtyBottleAvailable, qtyBottleTotal, qtyMlAvailable, qtyMlTotal, qtyStripsavailable,qtyStripsTotal, qtyMgAvailable, qtyMgTotal } = stocks
     
-    console.log(onCancelStock);
+   
 
 
     const handleChange = (e) => {
@@ -256,12 +259,12 @@ function EditDetailProduct() {
 
     if (isLiquid) {
         updatedStocks = {
-            qtyBoxAvailable, qtyBoxTotal, qtyBottleAvailable, qtyBottleTotal, qtyMlAvailable, qtyMlTotal, qtyStripsavailable: null, qtyStripsTotal: null, qtyMgAvailable: null, qtyMgTotal: null
+            qtyBoxAvailable, qtyBoxTotal, qtyBottleAvailable, qtyBottleTotal, qtyMlAvailable, qtyMlTotal, qtyStripsavailable: 0, qtyStripsTotal: 0, qtyMgAvailable: 0, qtyMgTotal: 0
         };
         
     } else {
         updatedStocks = {
-            qtyBoxAvailable, qtyBoxTotal, qtyBottleAvailable: null, qtyBottleTotal: null, qtyMlAvailable: null, qtyMlTotal: null, qtyStripsavailable,qtyStripsTotal, qtyMgAvailable, qtyMgTotal
+            qtyBoxAvailable, qtyBoxTotal, qtyBottleAvailable: 0, qtyBottleTotal: 0, qtyMlAvailable: 0, qtyMlTotal: 0, qtyStripsavailable,qtyStripsTotal, qtyMgAvailable, qtyMgTotal
         };
         
     }
@@ -271,7 +274,7 @@ function EditDetailProduct() {
 
     const newCalculatedStock = {stockLiquidNew , stockNonLiquidNew}
   await axios
-  .put(`/stocks/${params.productId}`, {updatedStocks, isLiquid, newCalculatedStock,  prevStock: calculatedStock, params: { id: params.productId } } )
+  .put(`/stocks/${params.productId}`, {updatedStocks, isLiquid, newCalculatedStock, userId: data.id, username: data.username,  prevStock: calculatedStock, params: { id: params.productId } } )
   .then((res) => {
    alert(res.data.message);
    fetchStocks();
@@ -280,7 +283,7 @@ function EditDetailProduct() {
   .catch((error) => console.log({ error }));
 };
 
-  
+console.log(isLiquid);
 
 let choosenCategory = categories.filter(function (category) {
     return category.id === category_id
@@ -417,10 +420,10 @@ let choosenCategory = categories.filter(function (category) {
                     <Paper className={classes.paper} >
                         <Grid container spacing={2} >
                             <Grid item xs={8}>
-                                <Typography>isLiquid ? : {isLiquid}  </Typography>   
+                                {isLiquid == 1 ? <Typography> Type : Liquid</Typography> : <Typography>Type: Non-Liquid</Typography> }     
                             </Grid>
                             <Grid item xs={2}>
-                            <Select defaultValue="" name='isLiquid' onChange={handleChange} >
+                            <Select   defaultValue="" name='isLiquid' onChange={handleChange} >
                                 <MenuItem value='1'>Yes</MenuItem>
                                 <MenuItem value='0'>No</MenuItem>
                             </Select>
@@ -446,17 +449,25 @@ let choosenCategory = categories.filter(function (category) {
                             </Grid>  
                         </Grid>
                     {isSave === false ?
-                    <Button onClick={buttonHandleChange} size="small" color="primary">
-                        Save
-                    </Button> : 
-                    <Button onClick={buttonHandleChange} size="small" color="primary">
-                        Saved
-                    </Button> }
-                    
+                        <Button onClick={buttonHandleChange} size="small" color="primary">
+                            Save
+                        </Button> : 
+                        <Button onClick={buttonHandleChange} size="small" color="primary">
+                            Saved
+                        </Button> }         
                     </Paper>  
                 </Box>
                     {isEditStock === false ? 
-                        <Button onClick={editStockHandleChange} size="medium" color="primary"> Edit Stock </Button>
+                        <Grid container spacing={2}>
+                            <Grid item xs={3}>
+                                <Button onClick={editStockHandleChange} size="medium" color="primary"> Edit Stock </Button>
+                            </Grid>
+                            <Grid item xs={8}>
+                                {isLiquid ? <Typography>Current Quantity: {calculatedStock.stockLiquid} Bottle </Typography> : <Typography>Current Quantity: {calculatedStock.stockNonLiquid} Strips</Typography>}
+                            </Grid>
+                            
+                        </Grid>
+                        
                         :
                         <Grid container spacing={2}>
                             <Grid  xs={5}>
@@ -473,12 +484,12 @@ let choosenCategory = categories.filter(function (category) {
                             <Grid xs={5}>
                                 <TextField id="outlined-textarea" name='qtyBottleTotal'  label="Bottle Total"  placeholder={`${qtyBottleTotal}`} onInput={stockHandleChange} />
                             </Grid>
-                            <Grid xs={5}>
+                            {/* <Grid xs={5}>
                                 <TextField id="outlined-textarea" name='qtyMlAvailable'  label="Ml Available"  placeholder={`${qtyMlAvailable}`} onInput={stockHandleChange} />
                             </Grid>
                             <Grid xs={5}>
                                 <TextField id="outlined-textarea" name='qtyMlTotal'  label="Ml Total"  placeholder={`${qtyMlTotal}`} onInput={stockHandleChange} />
-                            </Grid>
+                            </Grid> */}
                             <Grid xs={2}d>
                                 <Button onClick={editStockHandleChange} size="medium" color="primary"> Save </Button>
                                 <Button onClick={editStockCancelHandle} size="medium" color="secondary"> Cancel </Button>
@@ -491,18 +502,16 @@ let choosenCategory = categories.filter(function (category) {
                             <Grid xs={5}>
                                 <TextField id="outlined-textarea" name='qtyStripsTotal'  label="Strips Total"  placeholder={qtyStripsTotal} onInput={stockHandleChange} />
                             </Grid>
-                            <Grid xs={5}>
+                            {/* <Grid xs={5}>
                                 <TextField id="outlined-textarea" name='qtyMgAvailable'  label="Mg Available"  placeholder={qtyMgAvailable} onInput={stockHandleChange} />
                             </Grid>
                             <Grid xs={5}>
                                 <TextField id="outlined-textarea" name='qtyMgTotal'  label="Mg Total"  placeholder={qtyMgTotal} onInput={stockHandleChange} />
-                            </Grid>
-                            <Grid xs={2}d>
+                            </Grid> */}
+                            <Grid xs={2}>
                                 <Button onClick={editStockHandleChange} size="medium" color="primary"> Save </Button>
                                 <Button onClick={editStockCancelHandle} size="medium" color="secondary"> Cancel </Button>
-                            </Grid>
-                            
-                            
+                            </Grid>                                                       
                             </>
                             }  
                             </Grid>   

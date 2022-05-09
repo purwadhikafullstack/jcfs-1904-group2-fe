@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   AppBar,
   Box,
@@ -8,14 +8,20 @@ import {
   Button,
   Menu,
   MenuItem,
+  Badge,
 } from "@mui/material";
+// import {  } from "@material-ui/core";
 import Logo from "@mui/icons-material/HealingRounded";
+import { ShoppingCart } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../store/actions";
+import { CartContext } from "../../helper/Context";
 
 function Navigation() {
   const dispatch = useDispatch();
+  const { userId, setUserId, orderId, cart, setCart, change, setChange } =
+    useContext(CartContext);
   const { username, role } = useSelector((state) => {
     return state.auth;
   });
@@ -31,6 +37,8 @@ function Navigation() {
 
   const onLogoutClick = () => {
     dispatch(logoutAction());
+    setUserId(0);
+    setCart([]);
   };
 
   return (
@@ -52,11 +60,20 @@ function Navigation() {
 
           <div className="product-navbar">
             <Typography sx={{ mr: 3 }}> Products </Typography>
-            <Typography> Custom Products </Typography>
+            <Typography component={Link} to="/customorders">
+              {" "}
+              Custom Products{" "}
+            </Typography>
           </div>
 
           {username ? (
             <div>
+              <Button component={Link} to="/cart">
+                <Badge badgeContent={cart.length} color="secondary">
+                  <ShoppingCart color="primary" />
+                </Badge>
+              </Button>
+
               <Button
                 id="basic-button"
                 aria-controls={open ? "basic-menu" : undefined}
@@ -80,6 +97,9 @@ function Navigation() {
                 </MenuItem>
                 <MenuItem>
                   <Link to="/edit-profile">Edit Profile</Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/usertransactions">Transaction</Link>
                 </MenuItem>
                 <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
               </Menu>

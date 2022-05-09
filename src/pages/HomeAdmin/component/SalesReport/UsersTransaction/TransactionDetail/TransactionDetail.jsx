@@ -1,9 +1,9 @@
 import React, { useState , useEffect} from 'react'
 import axios from '../../../../../../utils/axios'
 import { useParams } from "react-router-dom";
-import { Typography,Container, Grid, Card, CardContent,InputBase, Input, IconButton,  FormControl, InputLabel, MenuItem, Select, CardActions, Button, Paper,Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core'
+import { Typography,Container, Grid, Card, CardContent,InputBase, Dialog, CardMedia, DialogContent, DialogActions, DialogTitle, DialogContentText, Input, IconButton,  FormControl, InputLabel, MenuItem, Select, CardActions, Button, Paper,Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core'
 import useStyles from './style'
-
+import moment from 'moment';
 
 function TransactionDetail() {
     const classes = useStyles();
@@ -11,6 +11,10 @@ function TransactionDetail() {
     const [ listProduct, setlistProduct] = useState([])
     const [ transactionDetail, setTransactionDetail] = useState({})
     const [ userDetail, setUserDetail] = useState ({})
+    const [ address, setAddress] = useState({})
+    const [ paymentProof, setPaymentProof ] = useState(0)
+    const [ open, setOpen ] = useState(false)
+    const date =  moment(transactionDetail.created_at).utc().format('LLL')
 
     useEffect(() => {
         axios
@@ -23,6 +27,15 @@ function TransactionDetail() {
           });
       }, []);
 
+      const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+        
+      };
+
 
     const fetchTransactionDetail = async () => {
         try {
@@ -30,16 +43,77 @@ function TransactionDetail() {
             const  {data} = res
             setTransactionDetail(data.result[0]);
             setUserDetail(data.user[0]);
+            console.log(data);
+            if (data.address) {
+              setAddress(data.address[0])
+            }
+  
             
         } catch (error) {
             console.log(alert(error.message));
         }
     };
 
+    const fetchPaymentProof = async () => {
+      try {
+          const res = await axios.get(`/payment/paymentproof/${params.transactionId}`, {params: { transactionId: params.transactionId}});
+          const  {data} = res 
+          console.log(data) 
+          if (data[0]) {
+            setPaymentProof(data[0]);
+          }         
+                
+      } catch (error) {
+          console.log(error.message);
+      }
+  };
+
    
     useEffect(() => {
         fetchTransactionDetail();
+        fetchPaymentProof();
     }, []);
+
+    const onSendClick = () => {
+      putTransactionStatusSend();
+      handleClose();
+
+       
+    }
+
+    const onRejectClick = () => {
+      putTransactionStatusReject();
+      handleClose(); 
+    
+    }
+
+    const putTransactionStatusSend = async () => {
+      try {
+          const res = await axios.put(`/transaction/send/${params.transactionId}`,{ params: { status: 'sent', id: params.transactionId } } );
+          const  {data} = res
+          console.log(data)
+          window.location.reload() 
+           
+      } catch (error) {
+          console.log(alert(error.message));
+      }
+    };
+
+    
+    const putTransactionStatusReject = async () => {
+      try {
+          const res = await axios.put(`/transaction/reject/${params.transactionId}`,{ params: { status: 'failed', id: params.transactionId } } );
+          const  {data} = res
+          console.log(data)
+          window.location.reload() 
+                 
+      } catch (error) {
+          console.log(alert(error.message));
+      }
+    };
+
+
+
 
     const columns = [
       { id:'product_id', label: 'Product Id', align: 'right', minWidth: 100},
@@ -50,10 +124,43 @@ function TransactionDetail() {
   ]
 
    
-console.log(transactionDetail);
+
 
   return (
     <Container>
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle>
+            Payment Proof
+          </DialogTitle>
+          <DialogContent>
+            <Card>
+              <CardMedia
+                component="img"
+                height="270"
+                image={paymentProof.paymentPhoto}
+                alt="..."
+              />
+            </Card>
+           
+          </DialogContent>
+          <DialogActions>
+          {transactionDetail.transactionStatus === 'complete' || transactionDetail.transactionStatus === 'sent' ||  transactionDetail.transactionStatus === 'failed' ?
+           null
+          : <div>
+            <Button onClick={onRejectClick}>Reject</Button>
+            <Button onClick={onSendClick}>Approve and Send</Button>
+          </div> }
+            <Button onClick={handleClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
+
+      </div>
       <div className={classes.toolbar}/>
         <Paper>
           <Card variant="outlined">
@@ -69,7 +176,7 @@ console.log(transactionDetail);
 
                 </Grid>
                 <Grid item xs={3}>
-                  <Typography>{transactionDetail.created_at}</Typography>
+                  <Typography>{date}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Typography>id: {userDetail.id}</Typography>
@@ -84,6 +191,45 @@ console.log(transactionDetail);
                 </Grid>
               </Grid>
             </CardActions>
+            <CardContent>
+              <Typography variant='h6'> Address Detail </Typography>
+              <Grid container spacing={2}>
+                <Grid container item xs={5}>
+                  <Grid item xs={3}>
+                    <Typography> Province </Typography>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <Typography>: {address.province}</Typography>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography> City </Typography>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <Typography>: {address.city}</Typography>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography> District </Typography>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <Typography>: {address.district}</Typography>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography> zipCode </Typography>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <Typography>: {address.zipCode}</Typography>
+                  </Grid>
+                </Grid>
+                <Grid container item xs={7}>
+                  <Grid item xs={6}>
+                    { transactionDetail.isByPresciption ? <Typography variant='h6'>Custom Order</Typography> : null }
+                  </Grid>
+                  <Grid item xs={6}>
+                    {paymentProof ? <Button variant="outlined" onClick={handleClickOpen}>Show Payment Proof</Button> : <Button disabled variant="outlined" >Payment Proof not Available</Button> } 
+                  </Grid>                 
+                </Grid>
+              </Grid>
+            </CardContent>
             <CardContent>
             <Paper>
               <TableContainer >

@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { useState, useContext } from "react";
+import { Button, FormControl, FormLabel, TextField } from "@mui/material";
 import { loginAction } from "../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { CartContext } from "../../helper/Context";
 import { Link, Navigate } from "react-router-dom";
 import axios from "../../utils/axios";
 
@@ -9,6 +10,7 @@ function LoginPage() {
   const dispatch = useDispatch();
   const username = useSelector((state) => state.auth.username);
   const [isLoading, setIsLoading] = useState(false);
+  const { userId, setUserId } = useContext(CartContext);
   const [formState, setFormState] = useState({
     username: "",
     password: "",
@@ -44,12 +46,6 @@ function LoginPage() {
     } catch (error) {
       console.log(error.response.data);
     }
-
-    // setIsLoading(true);
-    // console.log({ formState });
-    // const action = loginAction(formState);
-    // dispatch(action); // --> kirim ke reducer --> kirim ke state (selesai)
-    // setIsLoading(false);
   };
 
   if (username) {
@@ -57,40 +53,52 @@ function LoginPage() {
   }
 
   return (
-    <div className="pages">
-      <h1> Account Login</h1>
+    <div className="landing-page">
+      <h1> Login </h1>
       <p>
         New to Pharmacy.com? <a href="/register"> Create an account </a>
       </p>
 
-      <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Username"
-          name="username"
-          onChange={handleChange}
-          onKeyDown={onInputPress}
-        />
+      <div className="form-control">
+        <FormControl sx={{ m: 3 }}>
+          <FormLabel sx={{ mb: 4 }}>
+            <TextField
+              required
+              id="outlined-required"
+              label="Username"
+              name="username"
+              onChange={handleChange}
+              onKeyDown={onInputPress}
+              fullWidth
+            />
 
-        <TextField
-          id="outlined-password-input-required"
-          label="Password"
-          type="password"
-          name="password"
-          autoComplete="current-password"
-          onChange={handleChange}
-          onKeyDown={onInputPress}
-        />
-        <Button
-          variant="outlined"
-          onClick={onLoginClick}
-          onKeyDown={onInputPress}
-        >
-          {" "}
-          {isLoading} Login{" "}
-        </Button>
-        <Link to="/reset-password"> forget password?</Link>
+            <TextField
+              id="outlined-password-input-required"
+              label="Password"
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              onChange={handleChange}
+              onKeyDown={onInputPress}
+              fullWidth
+              sx={{ mt: 2, mb: 2 }}
+            />
+            <div className="login-button">
+              <Link to="/reset-password" class="login-text">
+                {" "}
+                forgot password?
+              </Link>
+              <Button
+                variant="outlined"
+                onClick={onLoginClick}
+                onKeyDown={onInputPress}
+              >
+                {" "}
+                {isLoading} Login{" "}
+              </Button>
+            </div>
+          </FormLabel>
+        </FormControl>
       </div>
     </div>
   );
