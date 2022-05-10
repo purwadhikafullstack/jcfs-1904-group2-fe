@@ -1,27 +1,31 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  appBar: {
-    position: 'relative',
-  },
   toolbar: theme.mixins.toolbar,
-  layout: {
-    marginTop: '5%',
-    width: 'auto',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto',
+  title: {
+    marginTop: "2%",
+  },
+  emptyButton: {
+    minWidth: "150px",
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: "5px",
+    },
+    [theme.breakpoints.up("xs")]: {
+      marginRight: "20px",
     },
   },
-  paper: {
-    flexGrow: 1,
-    marginTop: theme.spacing(1),
-    padding: theme.spacing(1),
+  checkoutButton: {
+    minWidth: "150px",
+  },
+  link: {
+    textDecoration: "none",
   },
 
-  
-  
+  cardDetails: {
+    display: "flex",
+    marginTop: "5%",
+    paddingBottom: "5%",
+    width: "100%",
+    justifyContent: "space-between",
+  },
 }));

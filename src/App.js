@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Navigation from "./components/Navigation/index";
 import Register from "./pages/Register";
 import Forgotpass from "./pages/Login/forgotpass";
+import Resetpass from "./pages/Login/resetpassword";
 import EditProfile from "./pages/EditProfile";
 import Cart from "./pages/Cart";
 import ProfilePicture from "./pages/ProfilePicture";
@@ -237,7 +238,11 @@ function App() {
                   />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-                  <Route path="/reset-password" element={<Forgotpass />} />
+                  <Route path="/forgot-password" element={<Forgotpass />} />
+                  <Route
+                    path="/reset-password/:token"
+                    element={<Resetpass />}
+                  />
                   <Route
                     path="/edit-profile-picture"
                     element={<ProfilePicture />}

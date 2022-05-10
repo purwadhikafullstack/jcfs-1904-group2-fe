@@ -84,7 +84,7 @@ function LoginPage() {
               sx={{ mt: 2, mb: 2 }}
             />
             <div className="login-button">
-              <Link to="/reset-password" class="login-text">
+              <Link to="/forgot-password" class="login-text">
                 {" "}
                 forgot password?
               </Link>

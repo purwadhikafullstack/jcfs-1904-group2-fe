@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, FormControl, FormLabel, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Navigate } from "react-router-dom";
 import { loginAction } from "../../store/actions";
@@ -18,10 +18,12 @@ function ResetPassword() {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  console.log(formState);
+
   const onResetPassword = async () => {
     try {
       const res = await axios.put(`/users/reset-password/${params.token}`, {
-        password: formState.newPassword,
+        password: formState.confirmPassword,
         token: params.token,
       });
       console.log(res.data);
@@ -52,33 +54,45 @@ function ResetPassword() {
   // }
 
   return (
-    <div className="pages">
+    <div className="landing-page">
       <div>
-        <h1> New Password </h1>
+        <h1> Update Your Password </h1>
       </div>
-      <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="New Password"
-          type="password"
-          name="newPassword"
-          onChange={handleChangePassword}
-        />
+      <div className="form-control">
+        <FormControl sx={{ m: 3 }}>
+          <FormLabel sx={{ mb: 4 }}>
+            <TextField
+              required
+              id="outlined-required"
+              label="New Password"
+              type="password"
+              name="newPassword"
+              onChange={handleChangePassword}
+              fullWidth
+            />
 
-        <TextField
-          required
-          id="outlined-required"
-          label="Confirm New Password"
-          type="password"
-          name="confirmPassword"
-          onChange={handleChangePassword}
-          onKeyDown={onInputPress}
-        />
+            <TextField
+              required
+              id="outlined-required"
+              label="Confirm New Password"
+              type="password"
+              name="confirmPassword"
+              onChange={handleChangePassword}
+              onKeyDown={onInputPress}
+              fullWidth
+              sx={{ mt: 2, mb: 2 }}
+            />
 
-        <Button variant="contained" onClick={onConfirmClick} href="/login">
-          Confirm
-        </Button>
+            <Button
+              variant="contained"
+              onClick={onConfirmClick}
+              href="/login"
+              sx={{ mt: 2 }}
+            >
+              Confirm
+            </Button>
+          </FormLabel>
+        </FormControl>
       </div>
     </div>
   );

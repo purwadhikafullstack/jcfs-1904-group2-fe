@@ -90,12 +90,15 @@ function Transaction({ transaction, change, setChange }) {
                 </Button>
               ) : null}
               {transaction.transactionStatus === "waiting" ? (
-                <Typography
+                <Button
                   component={Link}
                   to={`/usertransactions/${transaction.id}`}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
                 >
                   Complete this Transaction
-                </Typography>
+                </Button>
               ) : null}
             </CardActions>
           </Grid>

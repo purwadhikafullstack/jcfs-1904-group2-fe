@@ -59,8 +59,22 @@ function Navigation() {
           </IconButton>
 
           <div className="product-navbar">
-            <Typography sx={{ mr: 3 }}> Products </Typography>
-            <Typography component={Link} to="/customorders">
+            <Typography
+              sx={{ mr: 3 }}
+              component={Link}
+              to="/"
+              className="product"
+              variant="h6"
+            >
+              {" "}
+              Products{" "}
+            </Typography>
+            <Typography
+              component={Link}
+              to="/customorders"
+              className="product"
+              variant="h6"
+            >
               {" "}
               Custom Products{" "}
             </Typography>
@@ -93,24 +107,35 @@ function Navigation() {
                 }}
               >
                 <MenuItem>
-                  <Link to="/edit-profile-picture"> Profile Picture </Link>
+                  <Link to="/edit-profile-picture" className="profile-bar">
+                    {" "}
+                    Profile Picture{" "}
+                  </Link>
                 </MenuItem>
                 <MenuItem>
-                  <Link to="/edit-profile">Edit Profile</Link>
+                  <Link to="/edit-profile" className="profile-bar">
+                    Edit Profile
+                  </Link>
                 </MenuItem>
                 <MenuItem>
-                  <Link to="/usertransactions">Transaction</Link>
+                  <Link to="/usertransactions" className="profile-bar">
+                    Transaction
+                  </Link>
                 </MenuItem>
                 <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
               </Menu>
             </div>
           ) : (
             <div className="register-login-navbar">
-              <Typography sx={{ mr: 3 }}>
-                <Link to="/register">Register</Link>
+              <Typography sx={{ mr: 3 }} variant="h6">
+                <Link to="/register" className="register">
+                  Register
+                </Link>
               </Typography>
-              <Typography>
-                <Link to="/login">Login</Link>
+              <Typography variant="h6">
+                <Link to="/login" className="login">
+                  Login
+                </Link>
               </Typography>
             </div>
           )}
