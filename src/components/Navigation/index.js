@@ -10,18 +10,16 @@ import {
   MenuItem,
   Badge,
 } from "@mui/material";
-// import {  } from "@material-ui/core";
+import { CartContext } from "../../helper/Context";
 import Logo from "@mui/icons-material/HealingRounded";
 import { ShoppingCart } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../store/actions";
-import { CartContext } from "../../helper/Context";
 
 function Navigation() {
   const dispatch = useDispatch();
-  const { userId, setUserId, orderId, cart, setCart, change, setChange } =
-    useContext(CartContext);
+  const { setUserId, cart, setCart } = useContext(CartContext);
   const { username, role } = useSelector((state) => {
     return state.auth;
   });
@@ -121,6 +119,9 @@ function Navigation() {
                   <Link to="/usertransactions" className="profile-bar">
                     Transaction
                   </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/usertransactions">Transaction</Link>
                 </MenuItem>
                 <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
               </Menu>

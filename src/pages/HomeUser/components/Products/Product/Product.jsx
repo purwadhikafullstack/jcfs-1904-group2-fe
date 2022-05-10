@@ -39,8 +39,6 @@ function Product({ product }) {
     setOpen(true);
   };
 
-  console.log(cart);
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -97,12 +95,6 @@ function Product({ product }) {
   }, []);
 
   console.log(userId);
-
-  useEffect(() => {
-    if (product.productIMG) {
-      setImage(product.productIMG);
-    }
-  }, []);
 
   return (
     <>

@@ -14,7 +14,6 @@ import {
   CardContent,
   CircularProgress,
 } from "@material-ui/core";
-import { Link, Navigate } from "react-router-dom";
 import moment from "moment";
 
 function CustomOrder({ order }) {

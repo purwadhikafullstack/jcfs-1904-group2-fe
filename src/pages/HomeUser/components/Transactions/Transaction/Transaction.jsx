@@ -8,9 +8,6 @@ import {
   Card,
   CardActions,
   Button,
-  Input,
-  TextField,
-  CardMedia,
   CardContent,
   CircularProgress,
 } from "@material-ui/core";

@@ -8,7 +8,9 @@ import axios from "../../utils/axios";
 
 function LoginPage() {
   const dispatch = useDispatch();
-  const username = useSelector((state) => state.auth.username);
+  const { username, role } = useSelector((state) => {
+    return state.auth;
+  });
   const [isLoading, setIsLoading] = useState(false);
   const { userId, setUserId } = useContext(CartContext);
   const [formState, setFormState] = useState({
@@ -35,10 +37,11 @@ function LoginPage() {
         password: formState.password,
       });
       const payload = res.data;
-      console.log(payload);
-      // const id = payload.id;
-      // const username = payload.username;
-      // const role = payload.role;
+
+      if (res.data.role == "user") {
+        setUserId(res.data.id);
+      }
+      console.log(res.data.role);
 
       const actionObj = loginAction(payload);
       console.log(actionObj);

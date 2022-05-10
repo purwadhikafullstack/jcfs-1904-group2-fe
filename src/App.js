@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Grid, Box, Container, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { keepLoginAction } from "./store/actions";
 import { useSelector } from "react-redux";
@@ -132,6 +133,28 @@ function App() {
       console.log(alert(error.message));
     }
   };
+
+  useEffect(() => {
+    if (role == "admin") {
+      setCustom("and isCustom = 1");
+      fetchCart();
+    } else {
+      fetchCart();
+    }
+  }, [change, userId]);
+
+  useEffect(() => {
+    getLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    if (role == "user") {
+      setUserId(id);
+    }
+    if (isLocalStorageChecked) {
+      cartData();
+    }
+  }, [userId, orderId, cart]);
 
   useEffect(() => {
     if (role == "admin") {
