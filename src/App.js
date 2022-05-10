@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Grid, Box, Container, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { keepLoginAction } from "./store/actions";
 import { useSelector } from "react-redux";
@@ -8,6 +7,7 @@ import { CartContext } from "./helper/Context";
 import axios from "./utils/axios";
 import Login from "./pages/Login";
 import Navigation from "./components/Navigation/index";
+import Footer from "./pages/Footer";
 import Register from "./pages/Register";
 import Forgotpass from "./pages/Login/forgotpass";
 import Resetpass from "./pages/Login/resetpassword";
@@ -260,6 +260,7 @@ function App() {
                     element={<Checkout />}
                   />
                 </Routes>
+                <Footer />
               </div>
             </Router>
           </CartContext.Provider>

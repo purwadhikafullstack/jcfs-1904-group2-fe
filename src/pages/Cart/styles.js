@@ -4,6 +4,7 @@ export default makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   title: {
     marginTop: "2%",
+    fontFamily: "times new roman",
   },
   emptyButton: {
     minWidth: "150px",
@@ -26,6 +27,6 @@ export default makeStyles((theme) => ({
     marginTop: "5%",
     paddingBottom: "5%",
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
 }));

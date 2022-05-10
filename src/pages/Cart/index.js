@@ -170,7 +170,9 @@ function UserCart() {
                     </Grid>
                   ))}
                 </Grid>
-                <Typography variant="h6">Subtotal: {subTotal}</Typography>
+                <Typography variant="h6" className={classes.title}>
+                  Subtotal: {subTotal}
+                </Typography>
               </DialogContentText>
             </DialogContent>
             <DialogActions>
