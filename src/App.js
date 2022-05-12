@@ -66,6 +66,18 @@ function App() {
 
   console.log(cart);
 
+  console.log(role);
+
+  useEffect(() => {
+    if (role == 'admin') {
+      setCustom('and isCustom = 1')
+      fetchCart();
+    }else{
+      setCustom('and isCustom = 0')
+      fetchCart();
+    }
+},[change, userId, custom])
+
   useEffect(() => {
     const userLocalStorage = localStorage.getItem("userData");
     const dataLocalStorage = localStorage.getItem("cartData");
@@ -135,19 +147,6 @@ function App() {
   };
 
   useEffect(() => {
-    if (role == "admin") {
-      setCustom("and isCustom = 1");
-      fetchCart();
-    } else {
-      fetchCart();
-    }
-  }, [change, userId]);
-
-  useEffect(() => {
-    getLocalStorage();
-  }, []);
-
-  useEffect(() => {
     if (role == "user") {
       setUserId(id);
     }
@@ -155,15 +154,6 @@ function App() {
       cartData();
     }
   }, [userId, orderId, cart]);
-
-  useEffect(() => {
-    if (role == "admin") {
-      setCustom("and isCustom = 1");
-      fetchCart();
-    } else {
-      fetchCart();
-    }
-  }, [change, userId]);
 
   if (isLocalStorageChecked) {
     return (

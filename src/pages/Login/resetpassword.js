@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, FormControl, FormLabel, TextField } from "@mui/material";
+
 import { useParams } from "react-router-dom";
 import axios from "../../utils/axios";
 
@@ -32,11 +33,13 @@ function ResetPassword() {
   const onConfirmClick = () => {
     onResetPassword();
     alert("Password has been reset");
+
   };
 
   const onInputPress = (e) => {
     if (e.code === "Enter") onResetPassword();
   };
+
 
   return (
     <div className="landing-page">

@@ -1,4 +1,5 @@
 import React from "react";
+
 import "./footer.css";
 import Instagram from "@mui/icons-material/Instagram";
 import Facebook from "@mui/icons-material/Facebook";
@@ -81,29 +82,8 @@ function Index() {
         </div>
       </div>
     </footer>
+
   );
 }
 
 export default Index;
-
-{
-  /* <Box
-        px={{ xs: 3, sm: 10 }}
-        py={{ xs: 5, sm: 10 }}
-        bgcolor="black"
-        color="white"
-      >
-        <Container maxWidth="lg">
-          <Grid container spacing={5}>
-            <Grid item xs={12} sm={4}>
-              <Box borderBottom={1}> Help </Box>
-              <Box>
-                <Link href="/developer" color="inherit">
-                  Developer
-                </Link>
-              </Box>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box> */
-}
