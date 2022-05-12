@@ -120,9 +120,6 @@ function Navigation() {
                     Transaction
                   </Link>
                 </MenuItem>
-                <MenuItem>
-                  <Link to="/usertransactions">Transaction</Link>
-                </MenuItem>
                 <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
               </Menu>
             </div>
