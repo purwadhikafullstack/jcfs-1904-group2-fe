@@ -64,7 +64,7 @@ function App() {
 
   const dispatch = useDispatch();
 
-  console.log(role);
+  
 
   useEffect(() => {
     if (role == 'admin') {
@@ -75,6 +75,10 @@ function App() {
       fetchCart();
     }
 },[change, userId, custom])
+
+   
+  
+  
   
   useEffect(() => {
     const userLocalStorage = localStorage.getItem("userData");
@@ -109,12 +113,12 @@ function App() {
     localStorage.setItem("cartData", JSON.stringify(data));
   };
 
-  console.log(custom);
+  
   const getLocalStorage = () => {
     const dataLocalStorage = window.localStorage.getItem("cartData");
     const getData = JSON.parse(dataLocalStorage);
 
-    if (getData.userId) {
+    if (getData) {
       setUserId(getData.userId);
       setOrderId(getData.orderId);
       setCart(getData.cart);
